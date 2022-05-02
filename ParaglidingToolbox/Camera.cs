@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ParaglidingToolbox.PropertyGridConverters;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ namespace ParaglidingToolbox
             set { _rotation = value; _viewTransformIsDirty = true; }
         }
 
+        [TypeConverter(typeof(Vector2Converter))]
         public Vector2 Position
         {
             get => _position;
