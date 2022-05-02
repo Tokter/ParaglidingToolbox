@@ -2,6 +2,7 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -15,11 +16,22 @@ namespace ParaglidingToolbox.Scenes
         private UICamera _uiCamera;
         private SceneNode _root;
 
+        [Browsable(false)]
         public Camera Camera => _camera;
+
+        [Browsable(false)]
         public Camera UICamera => _uiCamera;
+
+        [Browsable(false)]
         public SceneNode Root => _root;
+
+        [Browsable(false)]
         public Vector2 CurrentAbsMousePos { get; private set; }
+
+        [Browsable(false)]
         public int CurrentMouseScreenX { get; private set; }
+
+        [Browsable(false)]
         public int CurrentMouseScreenY { get; private set; }
 
         public Scene()
@@ -45,10 +57,14 @@ namespace ParaglidingToolbox.Scenes
 
         #region Event handling
 
+        [Browsable(false)]
+        public Action ProcessFinished { get; set; }
+
         private List<EditState> _availableStates = new List<EditState>();
         private Stack<EditState> _activeState = new Stack<EditState>();
         private bool _cursorChanged = false;
 
+        [Browsable(false)]
         public EditState? ActiveState
         {
             get
@@ -103,6 +119,7 @@ namespace ParaglidingToolbox.Scenes
                 SetCursor(Cursors.Arrow);
             }
 
+            if (ActiveState == null) return false;
 
             //Process Event
             var done = false;
@@ -120,6 +137,8 @@ namespace ParaglidingToolbox.Scenes
                     done = true;
                 }
             }
+
+            if (ActiveState == null && ProcessFinished != null) ProcessFinished();
             
             return handled;
         }
@@ -130,6 +149,7 @@ namespace ParaglidingToolbox.Scenes
             if (ChangeCursor != null) ChangeCursor(cursor);
         }
 
+        [Browsable(false)]
         public Action<Cursor>? ChangeCursor { get; set; }
 
         #endregion

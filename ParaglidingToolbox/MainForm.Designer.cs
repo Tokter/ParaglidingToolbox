@@ -32,8 +32,12 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolPanel = new System.Windows.Forms.Panel();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.treeView = new System.Windows.Forms.TreeView();
             this.skglControl = new SkiaSharp.Views.Desktop.SKGLControl();
             this.menuStrip1.SuspendLayout();
+            this.toolPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -62,11 +66,40 @@
             // 
             // toolPanel
             // 
+            this.toolPanel.Controls.Add(this.propertyGrid);
+            this.toolPanel.Controls.Add(this.splitter1);
+            this.toolPanel.Controls.Add(this.treeView);
             this.toolPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.toolPanel.Location = new System.Drawing.Point(531, 24);
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new System.Drawing.Size(188, 476);
             this.toolPanel.TabIndex = 2;
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.Location = new System.Drawing.Point(0, 147);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(188, 329);
+            this.propertyGrid.TabIndex = 2;
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter1.Location = new System.Drawing.Point(0, 144);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(188, 3);
+            this.splitter1.TabIndex = 1;
+            this.splitter1.TabStop = false;
+            // 
+            // treeView
+            // 
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(188, 144);
+            this.treeView.TabIndex = 0;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
             // skglControl
             // 
@@ -100,6 +133,7 @@
             this.Text = "ParaglidingToolbox";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.toolPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -112,5 +146,8 @@
         private StatusStrip statusStrip1;
         private Panel toolPanel;
         private SkiaSharp.Views.Desktop.SKGLControl skglControl;
+        private PropertyGrid propertyGrid;
+        private Splitter splitter1;
+        private TreeView treeView;
     }
 }

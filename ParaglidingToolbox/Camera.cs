@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -42,12 +43,14 @@ namespace ParaglidingToolbox
         private int _screenWidth;
         private int _screenHeight;
 
+        [Browsable(false)]
         public int ScreenWidth
         {
             get => _screenWidth;
             set { _screenWidth = value; _viewTransformIsDirty = true; }
         }
 
+        [Browsable(false)]
         public int ScreenHeight
         {
             get => _screenHeight;

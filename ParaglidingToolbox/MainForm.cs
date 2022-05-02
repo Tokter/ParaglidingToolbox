@@ -1,4 +1,5 @@
 using ParaglidingToolbox.Scenes;
+using System.Runtime.InteropServices;
 
 namespace ParaglidingToolbox
 {
@@ -12,26 +13,81 @@ namespace ParaglidingToolbox
             InitializeComponent();
             skglControl.MouseWheel += SkglControl_MouseWheel;
             CurrentScene = new Scene_FluidSimulator();
+            propertyGrid.SelectedObject = CurrentScene;
+
+            //Setup render loop
+            Application.Idle += Application_Idle;
         }
+
+        private void Application_Idle(object? sender, EventArgs e)
+        {
+            while (IsApplicationIdle())
+            {
+                skglControl.Invalidate();
+            }
+        }
+        
+        private bool IsApplicationIdle()
+        {
+            NativeMessage result;
+            return PeekMessage(out result, IntPtr.Zero, (uint)0, (uint)0, (uint)0) == 0;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NativeMessage
+        {
+            public IntPtr Handle;
+            public uint Message;
+            public IntPtr WParameter;
+            public IntPtr LParameter;
+            public uint Time;
+            public Point Location;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern int PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
 
         public Scene CurrentScene
         {
             get => _currentScene;
             set
             {
-                if (_currentScene != null) _currentScene.ChangeCursor = null!;
+                if (_currentScene != null)
+                {
+                    _currentScene.ChangeCursor = null!;
+                    _currentScene.ProcessFinished = null!;
+                }                
                 _currentScene = value;
                 if (_currentScene != null)
                 {
                     _currentScene.ChangeCursor = (cursor) => skglControl.Cursor = cursor;
                     _currentScene.SetScreenSize(skglControl.Width, skglControl.Height);
+                    _currentScene.ProcessFinished = () => { propertyGrid.Refresh(); };
+                    UpdateSceneTree();
                 }
             }
         }
-            
-        public void InitializeCurrentScene()
+
+        private void UpdateSceneTree()
         {
-            
+            treeView.Nodes.Clear();
+
+            var sceneNode = new TreeNode { Text = "Scene", Tag = CurrentScene };
+            treeView.Nodes.Add(sceneNode);
+            if (CurrentScene.Camera != null)
+            {
+                var cameraNodes = new TreeNode { Text = "Camera", Tag = CurrentScene.Camera };
+                sceneNode.Nodes.Add(cameraNodes);
+            }
+        }
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node != null && e.Node.Tag != null)
+            {
+                propertyGrid.SelectedObject = e.Node.Tag;
+                propertyGrid.Update();
+            }
         }
 
         private void skglControl_MouseMove(object sender, MouseEventArgs e)
@@ -104,7 +160,6 @@ namespace ParaglidingToolbox
             {
                 _currentScene.Draw(e.Surface);
             }
-            skglControl.Invalidate();
         }
 
         private ParaglidingToolbox.MouseButtons ToButton(System.Windows.Forms.MouseButtons mb)
