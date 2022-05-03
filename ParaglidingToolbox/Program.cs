@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace ParaglidingToolbox
 {
     internal static class Program

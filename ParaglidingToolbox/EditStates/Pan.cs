@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ParaglidingToolbox.EditStates
 {
-    partial class Pan : EditState
+    public class Pan : EditState
     {
         private Vector2 _cameraStartPos;
         private int _mouseDownScreenX;

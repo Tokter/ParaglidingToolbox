@@ -186,6 +186,10 @@ namespace ParaglidingToolbox.Scenes
             _modelInvTransform = _modelInvTransforms.Pop();
         }
 
+        public virtual void Update()
+        {            
+        }
+
         public void Draw(SKSurface surface)
         {
             //Draw in object space

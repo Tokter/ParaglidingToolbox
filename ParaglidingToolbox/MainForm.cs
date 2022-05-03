@@ -23,6 +23,7 @@ namespace ParaglidingToolbox
         {
             while (IsApplicationIdle())
             {
+                if (CurrentScene != null) CurrentScene.Update();
                 skglControl.Invalidate();
             }
         }
@@ -78,6 +79,11 @@ namespace ParaglidingToolbox
             {
                 var cameraNodes = new TreeNode { Text = "Camera", Tag = CurrentScene.Camera };
                 sceneNode.Nodes.Add(cameraNodes);
+            }
+            foreach (var node in CurrentScene.Root)
+            {
+                var treeNode = new TreeNode { Text = node.GetType().Name, Tag = node };
+                sceneNode.Nodes.Add(treeNode);
             }
         }
 
